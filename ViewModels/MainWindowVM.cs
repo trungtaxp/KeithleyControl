@@ -179,7 +179,7 @@ namespace KeithleyControl.ViewModels
                     }
                     catch (Exception ex)
                     {
-                        //ShowMsg("接收数据异常：" + er.ToString());
+                        //ShowMsg("Abnormal data received：" + er.ToString());
                         //break;
                         MessageBox.Show(ex.ToString(), "Notify");
                     }
@@ -322,7 +322,7 @@ namespace KeithleyControl.ViewModels
             }
             catch (Exception er)
             {
-                //ShowMsg("发送数据异常：" + er.ToString());
+                //ShowMsg("Sending data abnormally：" + er.ToString());
                 //MessageBox.Show(er.ToString(), "Notify");
                 return null;
 
@@ -592,33 +592,33 @@ namespace KeithleyControl.ViewModels
         }
 
         #region IDisposable Support
-        private bool disposedValue = false;   /* 冗余检测 */
+        private bool disposedValue = false;   /* Redundancy check */
 
         /// <summary>
-        /// 释放组件所使用的非托管资源，并且有选择的释放托管资源（可以看作是Dispose()的安全实现）
+        /// Releases unmanaged resources used by the component, and selectively releases managed resources (can be seen as a safe implementation of Dispose())
         /// </summary>
         /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
         {
-            /* 检查是否已调用dispose */
+            /* Check if dispose has been called */
             if (!disposedValue)
             {
                 if (disposing)
                 {
-                    /* 释放托管资源（如果需要的话） */
+                    /* Release managed resources (if necessary) */
 
                     _socket?.Close();
                     _socket?.Dispose();
                 }
 
-                /* 释放非托管资源（如果有的话） */
+                /* Release unmanaged resources (if any) */
 
-                disposedValue = true;   /* 处理完毕 */
+                disposedValue = true;  /* Processing completed */
             }
         }
 
         /// <summary>
-        /// 实现IDisposable，释放组件所使用的所有资源
+        /// Implement IDisposable to release all resources used by the component
         /// </summary>
         public void Dispose()
         {

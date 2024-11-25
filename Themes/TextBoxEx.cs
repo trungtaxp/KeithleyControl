@@ -18,30 +18,30 @@ using System.Windows.Shapes;
 namespace TextBoxEx
 {
     /// <summary>
-    /// 按照步骤 1a 或 1b 操作，然后执行步骤 2 以在 XAML 文件中使用此自定义控件。
+    /// Follow step 1a or 1b, and then perform step 2 to use this custom control in a XAML file.
     ///
-    /// 步骤 1a) 在当前项目中存在的 XAML 文件中使用该自定义控件。
-    /// 将此 XmlNamespace 特性添加到要使用该特性的标记文件的根
-    /// 元素中:
+    /// Step 1a) Use the custom control in a XAML file that exists in the current project.
+    /// Add this XmlNamespace attribute to the root
+    /// element of the markup file where you want to use the attribute:
     ///
-    ///     xmlns:MyNamespace="clr-namespace:WpfNumericUpDown"
+    /// xmlns:MyNamespace="clr-namespace:WpfNumericUpDown"
     ///
     ///
-    /// 步骤 1b) 在其他项目中存在的 XAML 文件中使用该自定义控件。
-    /// 将此 XmlNamespace 特性添加到要使用该特性的标记文件的根
-    /// 元素中:
+    /// Step 1b) Use the custom control in a XAML file that exists in another project.
+    /// Add this XmlNamespace attribute to the root
+    /// element of the markup file where you want to use it:
     ///
     ///     xmlns:MyNamespace="clr-namespace:WpfNumericUpDown;assembly=WpfNumericUpDown"
     ///
-    /// 您还需要添加一个从 XAML 文件所在的项目到此项目的项目引用，
-    /// 并重新生成以避免编译错误:
+    /// You will also need to add a project reference to this project from the project where the XAML file is located,
+    /// and rebuild to avoid compilation errors:
     ///
-    ///     在解决方案资源管理器中右击目标项目，然后依次单击
-    ///     “添加引用”->“项目”->[浏览查找并选择此项目]
+    /// Right-click the target project in Solution Explorer and click
+    /// Add Reference -> Project -> [Browse to find and select this project]
     ///
     ///
-    /// 步骤 2)
-    /// 继续操作并在 XAML 文件中使用控件。
+    /// Step 2)
+    /// Go ahead and use the control in your XAML file。
     ///
     ///     <MyNamespace:TextBoxEx/>
     ///
@@ -191,7 +191,7 @@ namespace TextBoxEx
         }
 
         /// <summary>
-        /// 鼠标滚轮
+        /// Mouse wheel
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -223,7 +223,7 @@ namespace TextBoxEx
 
                 if (double.Parse(textbox.Text) < min)
                     textbox.Text = min.ToString();
-                textbox.Select(textbox.Text.Length, 0);//光标设置到文本尾部
+                textbox.Select(textbox.Text.Length, 0);//Set the cursor to the end of the text
             }
         }
 
