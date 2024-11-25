@@ -122,7 +122,7 @@ namespace KeithleyControl.Models
             Timeout = 60;
             ConnectFlag = true;
             DisConnectFlag = false;
-            Command = "*IDN?\n";
+            Command = "*IDN?";
         }
     }
 }

@@ -277,7 +277,7 @@ namespace KeithleyControl.ViewModels
                 }
                 else if (SelectedInterface == "TB-USB" || SelectedInterface == "GPIB")
                 {
-                    _connectDrive?.Dispose();
+                    _connectDrive.Dispose();
                     _connectDrive = null;
                 }
 
@@ -295,7 +295,7 @@ namespace KeithleyControl.ViewModels
         internal void Send(string msg)
         {
             string interfaceType = SelectedInterface;
-
+            
             if (string.IsNullOrEmpty(msg))
             {
                 return;
@@ -307,6 +307,8 @@ namespace KeithleyControl.ViewModels
                 {
                     case "TB-USB":
                     case "GPIB":
+                        // MessageBox.Show(msg, "Notify");
+                        Log(msg);
                         _connectDrive.RawIO.Write(msg + "\n");
                         break;
 
@@ -329,20 +331,37 @@ namespace KeithleyControl.ViewModels
         {
             try
             {
-                if (_socket != null && size > 0)
+                if (size <= 0)
                 {
-                    byte[] bytes = new byte[size];
-                    int length = _socket.Receive(bytes);
-                    string msg = Encoding.UTF8.GetString(bytes, 0, length);
-                    return msg;
+                    return null;
                 }
 
-                return null;
+                byte[] bytes = new byte[size];
+                int length;
+
+                if (SelectedInterface == "LAN" && _socket != null)
+                {
+                    length = _socket.Receive(bytes);
+                }
+                else if ((SelectedInterface == "TB-USB" || SelectedInterface == "GPIB") && _connectDrive != null)
+                {
+                    long actualCount;
+                    ReadStatus status;
+                    _connectDrive.RawIO.Read(bytes, 0, size, out actualCount, out status);
+                    length = (int)actualCount;
+                }
+                else
+                {
+                    return null;
+                }
+
+                string msg = Encoding.UTF8.GetString(bytes, 0, length);
+                // MessageBox.Show(msg, "Notify"); // Add logging here
+                return msg;
             }
             catch (Exception er)
             {
-                //ShowMsg("Sending data abnormally：" + er.ToString());
-                //MessageBox.Show(er.ToString(), "Notify");
+                Log($"Receive error: {er.Message}"); // Add logging here
                 return null;
             }
         }
@@ -564,7 +583,9 @@ namespace KeithleyControl.ViewModels
         internal void CmdDebug()
         {
             Send(SocketModel.Command);
-            SocketModel.Response = Recv(100);
+            string response = Recv(128); // Adjust the size as needed
+            SocketModel.Response = response;
+            // MessageBox.Show(response); // Log the response to display it
         }
 
         public ICommand CmdDebugCommand
