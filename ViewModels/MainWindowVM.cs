@@ -210,75 +210,58 @@ namespace KeithleyControl.ViewModels
             string ipAddress = IpAddr;
             int port = Port;
 
-            if (interfaceType == "TB-USB")
+            try
             {
-                try
+                switch (interfaceType)
                 {
-                    _connectDrive = GlobalResourceManager.Open(ipAddress.ToString()) as IMessageBasedSession;
-                    if (_connectDrive != null)
-                    {
-                        _connectDrive.TimeoutMilliseconds = 3000;
-                        _connectDrive.SendEndEnabled = true;
-                        _connectDrive.TerminationCharacterEnabled = true;
-                        _connectDrive.Clear();
-
-                        SocketModel.ConnectFlag = false;
-                        SocketModel.DisConnectFlag = true;
-                        PowerSupplyModel.Output = true;
-
-                        Log("Connected TB-USB OK!");
-                    }
-                }
-                catch (Ivi.Visa.NativeVisaException e)
-                {
-                    Log("Connected TB-USB fail!");
+                    case "TB-USB":
+                    case "GPIB":
+                        ConnectUsbOrGpib(ipAddress);
+                        break;
+                    case "LAN":
+                        ConnectLan(ipAddress, port);
+                        break;
+                    default:
+                        Log($"Unsupported interface type: {interfaceType}");
+                        break;
                 }
             }
-            else if (interfaceType == "LAN")
+            catch (Exception ex) when (ex is Ivi.Visa.NativeVisaException || ex is SocketException)
             {
-                try
-                {
-                    if (_socket == null)
-                    {
-                        _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        _socket.Connect(ipAddress.ToString(), port);
-
-                        SocketModel.ConnectFlag = false;
-                        SocketModel.DisConnectFlag = true;
-                        PowerSupplyModel.Output = true;
-                        Log("Connected LAN OK!");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _socket = null;
-
-                    Log("Connected LAN fail!");
-                }
+                _socket = null;
+                Log($"Connected {interfaceType} fail!");
             }
-            else if (interfaceType == "GPIB")
+        }
+
+        private void ConnectUsbOrGpib(string ipAddress)
+        {
+            _connectDrive = GlobalResourceManager.Open(ipAddress) as IMessageBasedSession;
+            if (_connectDrive != null)
             {
-                try
-                {
-                    _connectDrive = GlobalResourceManager.Open(ipAddress.ToString()) as IMessageBasedSession;
-                    if (_connectDrive != null)
-                    {
-                        _connectDrive.TimeoutMilliseconds = 3000;
-                        _connectDrive.SendEndEnabled = true;
-                        _connectDrive.TerminationCharacterEnabled = true;
-                        _connectDrive.Clear();
+                _connectDrive.TimeoutMilliseconds = 3000;
+                _connectDrive.SendEndEnabled = true;
+                _connectDrive.TerminationCharacterEnabled = true;
+                _connectDrive.Clear();
 
-                        SocketModel.ConnectFlag = false;
-                        SocketModel.DisConnectFlag = true;
-                        PowerSupplyModel.Output = true;
+                SocketModel.ConnectFlag = false;
+                SocketModel.DisConnectFlag = true;
+                PowerSupplyModel.Output = true;
 
-                        Log("Connected GPIB OK!");
-                    }
-                }
-                catch (Ivi.Visa.NativeVisaException e)
-                {
-                    Log("Connected TB-USB fail!");
-                }
+                Log($"Connected {SelectedInterface} OK!");
+            }
+        }
+
+        private void ConnectLan(string ipAddress, int port)
+        {
+            if (_socket == null)
+            {
+                _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                _socket.Connect(ipAddress, port);
+
+                SocketModel.ConnectFlag = false;
+                SocketModel.DisConnectFlag = true;
+                PowerSupplyModel.Output = true;
+                Log("Connected LAN OK!");
             }
         }
 
@@ -286,9 +269,18 @@ namespace KeithleyControl.ViewModels
         {
             try
             {
-                _socket?.Close();
-                _socket?.Dispose();
-                _socket = null;
+                if (SelectedInterface == "LAN")
+                {
+                    _socket?.Close();
+                    _socket?.Dispose();
+                    _socket = null;
+                }
+                else if (SelectedInterface == "TB-USB" || SelectedInterface == "GPIB")
+                {
+                    _connectDrive?.Dispose();
+                    _connectDrive = null;
+                }
+
                 SocketModel.DisConnectFlag = false;
                 SocketModel.ConnectFlag = true;
                 PowerSupplyModel.Output = false;
@@ -296,57 +288,40 @@ namespace KeithleyControl.ViewModels
             }
             catch (Exception ex)
             {
-                //Log("Disconnect error!");
+                Log("Disconnect error: " + ex.Message);
             }
         }
 
         internal void Send(string msg)
         {
             string interfaceType = SelectedInterface;
-            string ipAddress = IpAddr;
-            int port = Port;
 
-            if (interfaceType == "TB-USB")
+            if (string.IsNullOrEmpty(msg))
             {
-                try
-                {
-                    if (!string.IsNullOrEmpty(msg))
-                    {
-                        _connectDrive.RawIO.Write(msg + "\n");
-                    }
-                }
-                catch (Ivi.Visa.NativeVisaException e)
-                {
-                    Log("Send err!");
-                }
+                return;
             }
-            else if (interfaceType == "LAN")
+
+            try
             {
-                try
+                switch (interfaceType)
                 {
-                    if (_socket != null && !string.IsNullOrEmpty(msg))
-                    {
+                    case "TB-USB":
+                    case "GPIB":
+                        _connectDrive.RawIO.Write(msg + "\n");
+                        break;
+
+                    case "LAN":
                         _socket.Send(Encoding.UTF8.GetBytes(msg));
-                    }
-                }
-                catch (Exception er)
-                {
-                    Log("Send err!");
+                        break;
+
+                    default:
+                        Log("Unsupported interface type!");
+                        break;
                 }
             }
-            else if (interfaceType == "GPIB")
+            catch (Exception ex) when (ex is Ivi.Visa.NativeVisaException || ex is SocketException)
             {
-                try
-                {
-                    if (!string.IsNullOrEmpty(msg))
-                    {
-                        _connectDrive.RawIO.Write(msg + "\n");
-                    }
-                }
-                catch (Ivi.Visa.NativeVisaException e)
-                {
-                    Log("Send err!");
-                }   
+                Log("Send error: " + ex.Message);
             }
         }
 
