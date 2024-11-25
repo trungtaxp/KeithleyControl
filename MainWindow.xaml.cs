@@ -16,9 +16,6 @@ using System.Windows.Shapes;
 
 namespace KeithleyControl
 {
-    /// <summary>
-    /// MainWindow.xaml 的交互逻辑
-    /// </summary>
     public partial class MainWindow : Window
     {
         internal MainWindowVM mainWindowVM = null;
