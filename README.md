@@ -1,33 +1,28 @@
 # KeithleyControl
-![Test result](https://img.shields.io/badge/Windows-passing-green)
-![GitHub License](https://img.shields.io/github/license/linkmeta/KeithleyControl?color=blue&style=flat-square)
-![Issues](https://img.shields.io/github/issues/linkmeta/KeithleyControl?color=blue&style=flat-square)
-![release](https://img.shields.io/github/release/linkmeta/KeithleyControl.svg)
 
 ![logo](/Themes/favicon.ico)
 
 KeithleyControl Support Keithley Powersupply control by LAN Interface.
-基于WPF框架，MVVM模型开发，Keithley 电源控制，支持LAN口远程控制。
+Based on WPF framework, MVVM model development, Keithley power control, and supports LAN port remote control.
 
 
-## 功能列表
+## Features List
 
-- [x] 电源控制基本功能（电压、电流、实时电流曲线）
-- [x] 支持LAN口远程控制
-- [x] 支持设置电压，电流
-- [x] 支持实时获取电压电流值
-- [x] 采用oxyplot实时绘制电流曲线
-- [ ] GPIB控制（待开发）
-<img src="https://github.com/linkmeta/KeithleyControl/blob/fbaf49e2138cbcbe198cc390a4de4760cf668762/KeithleyControlDemo.gif" width="700">
-<img src="https://github.com/linkmeta/KeithleyControl/blob/fbaf49e2138cbcbe198cc390a4de4760cf668762/demo.png" width="700">
-## 构建
+- [x] Basic functions of power supply control (voltage, current, real-time current curve)
+- [x] Support LAN port remote control
+- [x] Support setting voltage and current
+- [x] Support real-time acquisition of voltage and current values
+- [x] Use oxyplot to draw current curve in real time
+- [ ] GPIB control (to be developed)
 
-- [x] VisualStudio 2022（基于 .NET WPF框架验证）
+## Build
 
-## 贡献
-绘图采用了开源oxyplot,特此感谢
+- [x] VisualStudio 2022 (Based on .NET WPF framework verification)
 
+## Contribute
+
+The drawing uses the open source oxyplot, thanks
 
 ## License
 
-软件采用 MIT License 授权（[License MIT](./LICENSE)）。
+The software is licensed under the MIT License（[License MIT](./LICENSE)）。
