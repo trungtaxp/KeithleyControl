@@ -103,7 +103,7 @@
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0"  Margin="5,5,5,0">
                         <TextBlock Text="Interface" VerticalAlignment="Center"  HorizontalAlignment="Left"></TextBlock>
-                        <ComboBox x:Name="Interface" Text="{Binding PowerSupplyModel.Interface,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding PowerSupplyModel.Interface}" Width="100" HorizontalAlignment="Right">
+                        <ComboBox x:Name="Interface" Text="{Binding SelectedInterface, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedInterface}" Width="100" HorizontalAlignment="Right">
                             <ComboBoxItem Content="LAN"></ComboBoxItem>
                             <ComboBoxItem Content="GPIB"></ComboBoxItem>
                         </ComboBox>

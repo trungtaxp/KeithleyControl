@@ -185,27 +185,57 @@ namespace KeithleyControl.ViewModels
                 }
             });
         }
-        internal void Connect()
-        {
-            try
-            {
-                if (_socket == null)
-                {
-                    _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                    _socket.Connect(SocketModel.IpAddr, SocketModel.Port);
- 
-                    SocketModel.ConnectFlag = false;
-                    SocketModel.DisConnectFlag = true;
-                    PowerSupplyModel.Output = true;
-                    Log("Connected OK!");
+        
+        public string SelectedInterface { get; set; }
 
+        private void Connect()
+        {
+            string interfaceType = SelectedInterface;
+            if (interfaceType == "LAN")
+            {
+                try
+                {
+                    if (_socket == null)
+                    {
+                        _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                        _socket.Connect(SocketModel.IpAddr, SocketModel.Port);
+ 
+                        SocketModel.ConnectFlag = false;
+                        SocketModel.DisConnectFlag = true;
+                        PowerSupplyModel.Output = true;
+                        Log("Connected LAN OK!");
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _socket = null;
+
+                    Log("Connected LAN fail!");
                 }
             }
-            catch (Exception ex)
+            else if (interfaceType == "GPIB")
             {
-                _socket = null;
+                try
+                {
+                    if (_socket == null)
+                    {
+                        _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                        _socket.Connect(SocketModel.IpAddr, SocketModel.Port);
+ 
+                        SocketModel.ConnectFlag = false;
+                        SocketModel.DisConnectFlag = true;
+                        PowerSupplyModel.Output = true;
+                        Log("Connected GPIB OK!");
 
-                Log("Connected fail!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _socket = null;
+
+                    Log("Connected GPIB fail!");
+                }
             }
         }
         internal void Disconnect()
@@ -475,11 +505,14 @@ namespace KeithleyControl.ViewModels
                 return new RelayCommand(CmdDebug);
             }
         }
+        
+        private RelayCommand _connectCommand;
         public ICommand ConnectCommand
         {
             get
             {
                 return new RelayCommand(Connect);
+                return _connectCommand ?? (_connectCommand = new RelayCommand(Connect));
             }
         }
         public ICommand DisconnectCommand
