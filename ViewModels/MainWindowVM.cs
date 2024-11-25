@@ -272,7 +272,7 @@ namespace KeithleyControl.ViewModels
                         SocketModel.DisConnectFlag = true;
                         PowerSupplyModel.Output = true;
 
-                        Log("Connected TB-USB OK!");
+                        Log("Connected GPIB OK!");
                     }
                 }
                 catch (Ivi.Visa.NativeVisaException e)
@@ -302,16 +302,51 @@ namespace KeithleyControl.ViewModels
 
         internal void Send(string msg)
         {
-            try
+            string interfaceType = SelectedInterface;
+            string ipAddress = IpAddr;
+            int port = Port;
+
+            if (interfaceType == "TB-USB")
             {
-                if (_socket != null && !string.IsNullOrEmpty(msg))
+                try
                 {
-                    _socket.Send(Encoding.UTF8.GetBytes(msg));
+                    if (!string.IsNullOrEmpty(msg))
+                    {
+                        _connectDrive.RawIO.Write(msg + "\n");
+                    }
+                }
+                catch (Ivi.Visa.NativeVisaException e)
+                {
+                    Log("Send err!");
                 }
             }
-            catch (Exception er)
+            else if (interfaceType == "LAN")
             {
-                Log("Send err!");
+                try
+                {
+                    if (_socket != null && !string.IsNullOrEmpty(msg))
+                    {
+                        _socket.Send(Encoding.UTF8.GetBytes(msg));
+                    }
+                }
+                catch (Exception er)
+                {
+                    Log("Send err!");
+                }
+            }
+            else if (interfaceType == "GPIB")
+            {
+                try
+                {
+                    if (!string.IsNullOrEmpty(msg))
+                    {
+                        _connectDrive.RawIO.Write(msg + "\n");
+                    }
+                }
+                catch (Ivi.Visa.NativeVisaException e)
+                {
+                    Log("Send err!");
+                }   
             }
         }
 
