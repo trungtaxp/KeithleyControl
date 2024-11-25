@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Ivi.Visa;
 
 namespace KeithleyControl.ViewModels
 {
@@ -190,6 +191,7 @@ namespace KeithleyControl.ViewModels
         public string IpAddr { get; set; }
         public int Port { get; set; }
         
+        private IMessageBasedSession _connectDrive;
         private void Connect()
         {
             string interfaceType = SelectedInterface;
@@ -200,25 +202,23 @@ namespace KeithleyControl.ViewModels
             {
                 try
                 {
-                    if (_socket == null)
+                    _connectDrive = GlobalResourceManager.Open(ipAddress.ToString()) as IMessageBasedSession;
+                    if (_connectDrive != null)
                     {
-                        _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        _socket.Connect(ipAddress.ToString(), port);
+                        _connectDrive.TimeoutMilliseconds = 3000;
+                        _connectDrive.SendEndEnabled = true;
+                        _connectDrive.TerminationCharacterEnabled = true;
+                        _connectDrive.Clear();
                         
                         SocketModel.ConnectFlag = false;
                         SocketModel.DisConnectFlag = true;
                         PowerSupplyModel.Output = true;
+                        
                         Log("Connected TB-USB OK!");
-
                     }
-                    
-                    
-                    
                 }
-                catch (Exception ex)
+                catch (Ivi.Visa.NativeVisaException e)
                 {
-                    _socket = null;
-
                     Log("Connected TB-USB fail!");
                 }
             }
@@ -249,27 +249,29 @@ namespace KeithleyControl.ViewModels
             {
                 try
                 {
-                    if (_socket == null)
+                    _connectDrive = GlobalResourceManager.Open(ipAddress.ToString()) as IMessageBasedSession;
+                    if (_connectDrive != null)
                     {
-                        _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        _socket.Connect(ipAddress.ToString(), port);
- 
+                        _connectDrive.TimeoutMilliseconds = 3000;
+                        _connectDrive.SendEndEnabled = true;
+                        _connectDrive.TerminationCharacterEnabled = true;
+                        _connectDrive.Clear();
+                        
                         SocketModel.ConnectFlag = false;
                         SocketModel.DisConnectFlag = true;
                         PowerSupplyModel.Output = true;
-                        Log("Connected GPIB OK!");
-
+                        
+                        Log("Connected TB-USB OK!");
                     }
                 }
-                catch (Exception ex)
+                catch (Ivi.Visa.NativeVisaException e)
                 {
-                    _socket = null;
-
-                    Log("Connected GPIB fail!");
+                    Log("Connected TB-USB fail!");
                 }
             }
         }
-        internal void Disconnect()
+
+        private void Disconnect()
         {
             try
             {
