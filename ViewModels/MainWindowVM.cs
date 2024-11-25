@@ -187,18 +187,49 @@ namespace KeithleyControl.ViewModels
         }
         
         public string SelectedInterface { get; set; }
-
+        public string IpAddr { get; set; }
+        public int Port { get; set; }
+        
         private void Connect()
         {
             string interfaceType = SelectedInterface;
-            if (interfaceType == "LAN")
+            string ipAddress = IpAddr;
+            int port = Port;
+            
+            if (interfaceType == "TB-USB")
             {
                 try
                 {
                     if (_socket == null)
                     {
                         _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        _socket.Connect(SocketModel.IpAddr, SocketModel.Port);
+                        _socket.Connect(ipAddress.ToString(), port);
+                        
+                        SocketModel.ConnectFlag = false;
+                        SocketModel.DisConnectFlag = true;
+                        PowerSupplyModel.Output = true;
+                        Log("Connected TB-USB OK!");
+
+                    }
+                    
+                    
+                    
+                }
+                catch (Exception ex)
+                {
+                    _socket = null;
+
+                    Log("Connected TB-USB fail!");
+                }
+            }
+            else if (interfaceType == "LAN")
+            {
+                try
+                {
+                    if (_socket == null)
+                    {
+                        _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                        _socket.Connect(ipAddress.ToString(), port);
  
                         SocketModel.ConnectFlag = false;
                         SocketModel.DisConnectFlag = true;
@@ -221,7 +252,7 @@ namespace KeithleyControl.ViewModels
                     if (_socket == null)
                     {
                         _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        _socket.Connect(SocketModel.IpAddr, SocketModel.Port);
+                        _socket.Connect(ipAddress.ToString(), port);
  
                         SocketModel.ConnectFlag = false;
                         SocketModel.DisConnectFlag = true;
@@ -511,7 +542,6 @@ namespace KeithleyControl.ViewModels
         {
             get
             {
-                return new RelayCommand(Connect);
                 return _connectCommand ?? (_connectCommand = new RelayCommand(Connect));
             }
         }
