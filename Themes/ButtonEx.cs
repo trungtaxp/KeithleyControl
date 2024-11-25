@@ -59,7 +59,8 @@ namespace ButtonEx
         }
 
         public static readonly DependencyProperty ButtonTypeProperty =
-         DependencyProperty.Register("ButtonType", typeof(ButtonType), typeof(ButtonEx), new PropertyMetadata(ButtonType.Normal));
+            DependencyProperty.Register("ButtonType", typeof(ButtonType), typeof(ButtonEx),
+                new PropertyMetadata(ButtonType.Normal));
 
 
         public ImageSource Icon
@@ -69,7 +70,7 @@ namespace ButtonEx
         }
 
         public static readonly DependencyProperty IconProperty =
-         DependencyProperty.Register("Icon", typeof(ImageSource), typeof(ButtonEx), new PropertyMetadata(null));
+            DependencyProperty.Register("Icon", typeof(ImageSource), typeof(ButtonEx), new PropertyMetadata(null));
 
 
         public CornerRadius CornerRadius
@@ -79,7 +80,8 @@ namespace ButtonEx
         }
 
         public static readonly DependencyProperty CornerRadiusProperty =
-         DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(ButtonEx), new PropertyMetadata(new CornerRadius(0)));
+            DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(ButtonEx),
+                new PropertyMetadata(new CornerRadius(0)));
 
 
         public Brush MouseOverForeground
@@ -89,7 +91,7 @@ namespace ButtonEx
         }
 
         public static readonly DependencyProperty MouseOverForegroundProperty =
-         DependencyProperty.Register("MouseOverForeground", typeof(Brush), typeof(ButtonEx), new PropertyMetadata());
+            DependencyProperty.Register("MouseOverForeground", typeof(Brush), typeof(ButtonEx), new PropertyMetadata());
 
 
         public Brush MousePressedForeground
@@ -99,7 +101,8 @@ namespace ButtonEx
         }
 
         public static readonly DependencyProperty MousePressedForegroundProperty =
-         DependencyProperty.Register("MousePressedForeground", typeof(Brush), typeof(ButtonEx), new PropertyMetadata());
+            DependencyProperty.Register("MousePressedForeground", typeof(Brush), typeof(ButtonEx),
+                new PropertyMetadata());
 
 
         public Brush MouseOverBorderbrush
@@ -109,7 +112,8 @@ namespace ButtonEx
         }
 
         public static readonly DependencyProperty MouseOverBorderbrushProperty =
-         DependencyProperty.Register("MouseOverBorderbrush", typeof(Brush), typeof(ButtonEx), new PropertyMetadata());
+            DependencyProperty.Register("MouseOverBorderbrush", typeof(Brush), typeof(ButtonEx),
+                new PropertyMetadata());
 
 
         public Brush MouseOverBackground
@@ -119,7 +123,7 @@ namespace ButtonEx
         }
 
         public static readonly DependencyProperty MouseOverBackgroundProperty =
-         DependencyProperty.Register("MouseOverBackground", typeof(Brush), typeof(ButtonEx), new PropertyMetadata());
+            DependencyProperty.Register("MouseOverBackground", typeof(Brush), typeof(ButtonEx), new PropertyMetadata());
 
 
         public Brush MousePressedBackground
@@ -129,7 +133,8 @@ namespace ButtonEx
         }
 
         public static readonly DependencyProperty MousePressedBackgroundProperty =
-         DependencyProperty.Register("MousePressedBackground", typeof(Brush), typeof(ButtonEx), new PropertyMetadata());
+            DependencyProperty.Register("MousePressedBackground", typeof(Brush), typeof(ButtonEx),
+                new PropertyMetadata());
     }
 
     public enum ButtonType
@@ -138,6 +143,5 @@ namespace ButtonEx
         Icon,
         Text,
         IconText
-
     }
 }

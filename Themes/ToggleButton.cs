@@ -16,9 +16,11 @@ namespace ToggleButton
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ToggleButton),
                 new FrameworkPropertyMetadata(typeof(ToggleButton)));
         }
+
         public static readonly DependencyProperty OffTextProperty =
             DependencyProperty.Register("OffText", typeof(string), typeof(ToggleButton),
                 new PropertyMetadata("Off"));
+
         public string OffText
         {
             get { return (string)GetValue(OffTextProperty); }
@@ -28,6 +30,7 @@ namespace ToggleButton
         public static readonly DependencyProperty OnTextProperty =
             DependencyProperty.Register("OnText", typeof(string), typeof(ToggleButton),
                 new PropertyMetadata("On"));
+
         public string OnText
         {
             get { return (string)GetValue(OnTextProperty); }
@@ -37,6 +40,7 @@ namespace ToggleButton
         public static readonly DependencyProperty OnForegroundProperty =
             DependencyProperty.Register("OnForeground", typeof(Brush), typeof(ToggleButton),
                 new PropertyMetadata(Brushes.Silver));
+
         public Brush OnForeground
         {
             get { return (Brush)GetValue(OnForegroundProperty); }
@@ -46,11 +50,11 @@ namespace ToggleButton
         public static readonly DependencyProperty OnBackgroundProperty =
             DependencyProperty.Register("OnBackground", typeof(Brush), typeof(ToggleButton),
                 new PropertyMetadata(Brushes.Green));
+
         public Brush OnBackground
         {
             get { return (Brush)GetValue(OnBackgroundProperty); }
             set { SetValue(OnBackgroundProperty, value); }
         }
-
     }
 }

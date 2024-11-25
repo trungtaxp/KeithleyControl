@@ -54,7 +54,6 @@ namespace KeithleyControl.Commands
         public RelayCommand(Action workTodo)
         {
             commandTasks = workTodo;
-
         }
 
         public event EventHandler CanExecuteChanged;
@@ -62,7 +61,6 @@ namespace KeithleyControl.Commands
         public bool CanExecute(object parameter)
         {
             return true;
-
         }
 
         public void Execute(object parameter)

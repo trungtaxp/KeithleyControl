@@ -58,13 +58,15 @@ namespace TextBoxEx
             return DependencyProperty.UnsetValue;
         }
     }
+
     public class TextBoxEx : TextBox
     {
         static TextBoxEx()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(TextBoxEx), new FrameworkPropertyMetadata(typeof(TextBoxEx)));
-
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(TextBoxEx),
+                new FrameworkPropertyMetadata(typeof(TextBoxEx)));
         }
+
         public double Step
         {
             get { return (double)GetValue(StepProperty); }
@@ -79,6 +81,7 @@ namespace TextBoxEx
             get { return (int)GetValue(MinimumProperty); }
             set { SetValue(MinimumProperty, value); }
         }
+
         public static readonly DependencyProperty MinimumProperty =
             DependencyProperty.Register("Minimum", typeof(int), typeof(TextBoxEx), new PropertyMetadata(0));
 
@@ -87,11 +90,13 @@ namespace TextBoxEx
             get { return (int)GetValue(MaximumProperty); }
             set { SetValue(MaximumProperty, value); }
         }
+
         public static readonly DependencyProperty MaximumProperty =
             DependencyProperty.Register("Maximum", typeof(int), typeof(TextBoxEx), new PropertyMetadata(0));
 
 
         #region CornerRadius
+
         public CornerRadius GetCornerRadius(DependencyObject obj)
         {
             return (CornerRadius)obj.GetValue(CornerRadiusProperty);
@@ -104,9 +109,11 @@ namespace TextBoxEx
 
         public static readonly DependencyProperty CornerRadiusProperty =
             DependencyProperty.RegisterAttached("CornerRadius", typeof(CornerRadius), typeof(TextBoxEx));
+
         #endregion
 
         #region IsClearButtonVisible
+
         public static bool GetIsClearBtnVisible(DependencyObject obj)
         {
             return (bool)obj.GetValue(IsClearBtnVisibleProperty);
@@ -118,7 +125,8 @@ namespace TextBoxEx
         }
 
         public static readonly DependencyProperty IsClearBtnVisibleProperty =
-            DependencyProperty.RegisterAttached("IsClearBtnVisible", typeof(bool), typeof(TextBoxEx), new PropertyMetadata(OnTextBoxHookChanged));
+            DependencyProperty.RegisterAttached("IsClearBtnVisible", typeof(bool), typeof(TextBoxEx),
+                new PropertyMetadata(OnTextBoxHookChanged));
 
 
         private static void OnTextBoxHookChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -157,7 +165,8 @@ namespace TextBoxEx
 
         // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsAddBtnVisibleProperty =
-            DependencyProperty.RegisterAttached("IsAddBtnVisible", typeof(bool), typeof(TextBoxEx), new PropertyMetadata(OnTextChanged));
+            DependencyProperty.RegisterAttached("IsAddBtnVisible", typeof(bool), typeof(TextBoxEx),
+                new PropertyMetadata(OnTextChanged));
 
 
         public static bool GetIsRemoveBtnVisible(DependencyObject obj)
@@ -171,7 +180,8 @@ namespace TextBoxEx
         }
 
         public static readonly DependencyProperty IsRemoveBtnVisibleProperty =
-            DependencyProperty.RegisterAttached("IsRemoveBtnVisible", typeof(bool), typeof(TextBoxEx), new PropertyMetadata(OnTextChanged));
+            DependencyProperty.RegisterAttached("IsRemoveBtnVisible", typeof(bool), typeof(TextBoxEx),
+                new PropertyMetadata(OnTextChanged));
 
         private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -205,6 +215,7 @@ namespace TextBoxEx
                 step = textboxex.Step;
                 min = textboxex.Minimum;
             }
+
             var textbox = sender as TextBox;
             double temp;
             bool result = double.TryParse(textbox.Text, out temp);
@@ -214,7 +225,6 @@ namespace TextBoxEx
                 if (e.Delta > 0)
                 {
                     textbox.Text = (temp + step).ToString();
-
                 }
                 else
                 {
@@ -223,7 +233,7 @@ namespace TextBoxEx
 
                 if (double.Parse(textbox.Text) < min)
                     textbox.Text = min.ToString();
-                textbox.Select(textbox.Text.Length, 0);//Set the cursor to the end of the text
+                textbox.Select(textbox.Text.Length, 0); //Set the cursor to the end of the text
             }
         }
 
@@ -269,7 +279,6 @@ namespace TextBoxEx
                 textbox.Focus();
                 textbox.Select(textbox.Text.Length, 0);
             }
-
         }
     }
 }

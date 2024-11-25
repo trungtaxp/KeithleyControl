@@ -19,6 +19,7 @@ namespace KeithleyControl.ViewModels
     internal class MainWindowVM : MainWindowBase, IDisposable
     {
         public string _LogInfo;
+
         public string LogInfo
         {
             get { return _LogInfo; }
@@ -31,25 +32,34 @@ namespace KeithleyControl.ViewModels
                 }
             }
         }
+
         public void Log(string str)
         {
             LogInfo = str;
         }
+
         private Socket _socket;
         public SocketModel SocketModel { get; set; }
         public PowerSupplyModel PowerSupplyModel { get; set; }
-        
+
         PlotModel _mPlotModelData = new PlotModel();
+
         public PlotModel PlotModelData
         {
             get { return _mPlotModelData; }
-            set { _mPlotModelData = value; OnPropertyChanged(nameof(PlotModelData)); }
+            set
+            {
+                _mPlotModelData = value;
+                OnPropertyChanged(nameof(PlotModelData));
+            }
         }
+
         public DateTimeAxis XTimeAxis;
 
         public LinearAxis YCurrentVal;
         public LineSeries lineSeriesCurrentVal;
         public int YZoomFactor = 1;
+
         public void InitPlot()
         {
             PlotModelData = new PlotModel();
@@ -64,7 +74,6 @@ namespace KeithleyControl.ViewModels
                 //MajorGridlineColor = OxyColor.FromArgb(40, 0, 0, 139),
                 //MinorGridlineColor = OxyColor.FromArgb(20, 0, 0, 139),
                 MinorGridlineStyle = LineStyle.Solid,
-
             };
 
             YCurrentVal = new LinearAxis()
@@ -80,14 +89,12 @@ namespace KeithleyControl.ViewModels
                 FontSize = 13,
                 PositionTier = 6,
                 Key = "Current",
-                
+
                 //MajorGridlineColor = OxyColor.FromArgb(40, 10, 10, 139),
                 //MinorGridlineColor = OxyColor.FromArgb(20, 5, 5, 139),
                 MinorGridlineStyle = LineStyle.Solid,
                 IsPanEnabled = false,
                 IsZoomEnabled = false
-
-                
             };
 
             PlotModelData.Axes.Add(XTimeAxis);
@@ -108,31 +115,34 @@ namespace KeithleyControl.ViewModels
 
         private void PlotModelData_MouseDown(object sender, OxyMouseDownEventArgs e)
         {
-
         }
 
         public void YZoomOut()
         {
             YCurrentVal.Maximum *= 2;
-            YCurrentVal.MajorStep = (YCurrentVal.ActualMaximum - YCurrentVal.ActualMinimum)/10;
+            YCurrentVal.MajorStep = (YCurrentVal.ActualMaximum - YCurrentVal.ActualMinimum) / 10;
         }
+
         public void YZoomIn()
         {
             YCurrentVal.Maximum /= 2;
             YCurrentVal.MajorStep = (YCurrentVal.ActualMaximum - YCurrentVal.ActualMinimum) / 10;
-
         }
+
         public void ClearPlot()
         {
             lineSeriesCurrentVal.Points.Clear();
             PlotModelData.InvalidatePlot(true);
         }
+
         internal CancellationTokenSource plotTokenSource;
         internal CancellationToken cancelPlotToken;
+
         internal void StopUpdatePlotTask()
         {
             plotTokenSource.Cancel();
         }
+
         public void UpdatePlotTask()
         {
             double val;
@@ -147,6 +157,7 @@ namespace KeithleyControl.ViewModels
                         {
                             break;
                         }
+
                         val = Convert.ToDouble(PowerSupplyModel.CurrentVal);
                         var date = DateTime.Now;
                         lineSeriesCurrentVal.Points.Add(DateTimeAxis.CreateDataPoint(date, val));
@@ -158,10 +169,10 @@ namespace KeithleyControl.ViewModels
                             var xPan = (XTimeAxis.ActualMaximum - XTimeAxis.DataMaximum) * XTimeAxis.Scale;
                             XTimeAxis.Pan(xPan);
                         }
+
                         Thread.Sleep(1000);
                     }
                 }, cancelPlotToken);
-
         }
 
         private async void SocketRecvTask()
@@ -186,18 +197,19 @@ namespace KeithleyControl.ViewModels
                 }
             });
         }
-        
+
         public string SelectedInterface { get; set; }
         public string IpAddr { get; set; }
         public int Port { get; set; }
-        
+
         private IMessageBasedSession _connectDrive;
+
         private void Connect()
         {
             string interfaceType = SelectedInterface;
             string ipAddress = IpAddr;
             int port = Port;
-            
+
             if (interfaceType == "TB-USB")
             {
                 try
@@ -209,11 +221,11 @@ namespace KeithleyControl.ViewModels
                         _connectDrive.SendEndEnabled = true;
                         _connectDrive.TerminationCharacterEnabled = true;
                         _connectDrive.Clear();
-                        
+
                         SocketModel.ConnectFlag = false;
                         SocketModel.DisConnectFlag = true;
                         PowerSupplyModel.Output = true;
-                        
+
                         Log("Connected TB-USB OK!");
                     }
                 }
@@ -230,12 +242,11 @@ namespace KeithleyControl.ViewModels
                     {
                         _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                         _socket.Connect(ipAddress.ToString(), port);
- 
+
                         SocketModel.ConnectFlag = false;
                         SocketModel.DisConnectFlag = true;
                         PowerSupplyModel.Output = true;
                         Log("Connected LAN OK!");
-
                     }
                 }
                 catch (Exception ex)
@@ -256,11 +267,11 @@ namespace KeithleyControl.ViewModels
                         _connectDrive.SendEndEnabled = true;
                         _connectDrive.TerminationCharacterEnabled = true;
                         _connectDrive.Clear();
-                        
+
                         SocketModel.ConnectFlag = false;
                         SocketModel.DisConnectFlag = true;
                         PowerSupplyModel.Output = true;
-                        
+
                         Log("Connected TB-USB OK!");
                     }
                 }
@@ -287,7 +298,6 @@ namespace KeithleyControl.ViewModels
             {
                 //Log("Disconnect error!");
             }
-
         }
 
         internal void Send(string msg)
@@ -301,14 +311,12 @@ namespace KeithleyControl.ViewModels
             }
             catch (Exception er)
             {
-
                 Log("Send err!");
-
             }
         }
+
         internal string Recv(int size)
         {
-
             try
             {
                 if (_socket != null && size > 0)
@@ -318,6 +326,7 @@ namespace KeithleyControl.ViewModels
                     string msg = Encoding.UTF8.GetString(bytes, 0, length);
                     return msg;
                 }
+
                 return null;
             }
             catch (Exception er)
@@ -325,41 +334,46 @@ namespace KeithleyControl.ViewModels
                 //ShowMsg("Sending data abnormally：" + er.ToString());
                 //MessageBox.Show(er.ToString(), "Notify");
                 return null;
-
             }
         }
+
         //PowerSupply API
         internal void DoReset()
         {
             string cmd = "*RST\n";
             Send(cmd);
         }
+
         internal void QueryId()
         {
             string cmd = "*IDN?\n";
             Send(cmd);
             //Recv(100);
         }
+
         internal void SetFunction(int val)
         {
-
         }
+
         internal void SetVoltage(double val)
         {
             string cmd = "SOUR1:VOLT " + val.ToString() + "\n";
             Send(cmd);
         }
+
         internal string GetVoltage()
         {
             string cmd = "SOUR1:VOLT?\n";
             Send(cmd);
             return Recv(32);
         }
+
         internal void SetVoltageProtection(double val)
         {
             string cmd = "SOUR1:VOLT:PROT " + val.ToString() + "\n";
             Send(cmd);
         }
+
         internal void SetCurrent(double val)
         {
             string cmd = "SOUR1:CURR " + val.ToString() + "\n";
@@ -372,11 +386,13 @@ namespace KeithleyControl.ViewModels
             Send(cmd);
             return Recv(32);
         }
+
         internal void SetCurrentProtection(double val)
         {
             string cmd = "SOUR1:CURR:PROT " + val.ToString() + "\n";
             Send(cmd);
         }
+
         private Decimal ChangeDataToD(string strData)
         {
             Decimal dData = 0.0M;
@@ -384,14 +400,18 @@ namespace KeithleyControl.ViewModels
             {
                 dData = Decimal.Parse(strData, System.Globalization.NumberStyles.Float);
             }
+
             return dData;
         }
+
         internal CancellationTokenSource currentTokenSource;
         internal CancellationToken cancelCurrentToken;
+
         internal void StopMeasureCurrent()
         {
             currentTokenSource.Cancel();
         }
+
         internal string MeasureCurrent()
         {
             string cmd = "MEAS:CURR?\n";
@@ -410,10 +430,11 @@ namespace KeithleyControl.ViewModels
                             //Console.WriteLine("Task canceled");
                             break;
                         }
+
                         Send(cmd);
                         temp = Recv(64);
 
-                        if(temp!=null && !temp.Contains("KEITHLEY")&&temp.Contains("A")&& temp.Contains("V"))
+                        if (temp != null && !temp.Contains("KEITHLEY") && temp.Contains("A") && temp.Contains("V"))
                         {
                             string[] bArray = temp.Split(',');
                             string[] strA = bArray[0].Split('A');
@@ -430,18 +451,20 @@ namespace KeithleyControl.ViewModels
                 }, cancelCurrentToken);
             return temp;
         }
+
         internal string MeassureVoltage()
         {
             string cmd = "MEAS:VOLT?\n";
             Send(cmd);
             return Recv(32);
         }
+
         internal void SetDataFormat()
         {
-        
             string cmd = "FORM: ELEM \"READ\"\n";
             Send(cmd);
         }
+
         internal void SetOutputState(int val)
         {
             string cmd;
@@ -453,14 +476,16 @@ namespace KeithleyControl.ViewModels
             {
                 cmd = "OUTP:STAT ON\n";
             }
+
             Send(cmd);
         }
+
         internal string GetOutputState()
         {
             string cmd = "OUTP:STAT?\n";
             string state = "OFF";
             Send(cmd);
-            
+
             try
             {
                 state = Recv(16);
@@ -472,12 +497,14 @@ namespace KeithleyControl.ViewModels
                 {
                     state = "ON";
                 }
-            }catch (Exception ex)
-            {
-                
             }
+            catch (Exception ex)
+            {
+            }
+
             return state;
         }
+
         internal void SetDisplayText(string val)
         {
             string cmd = "DISP:USER:TEXT \"" + val + "\"\n";
@@ -487,7 +514,7 @@ namespace KeithleyControl.ViewModels
         internal void PowerSupplySet()
         {
             bool val = PowerSupplyModel.Checked;
-            if(!val)
+            if (!val)
             {
                 StopMeasureCurrent();
                 StopUpdatePlotTask();
@@ -501,7 +528,7 @@ namespace KeithleyControl.ViewModels
             {
                 //DoReset();
                 SetVoltage(Convert.ToDouble(PowerSupplyModel.SetVoltageSet));
-                SetVoltageProtection(Convert.ToDouble(PowerSupplyModel.SetVoltageSet)+1);
+                SetVoltageProtection(Convert.ToDouble(PowerSupplyModel.SetVoltageSet) + 1);
 
                 SetCurrent(Convert.ToDouble(PowerSupplyModel.SetCurrentMax));
                 SetCurrentProtection(Convert.ToDouble(PowerSupplyModel.SetCurrentMax));
@@ -521,10 +548,9 @@ namespace KeithleyControl.ViewModels
                 //SocketRecvTask();
                 UpdatePlotTask();
                 Log("Power Supply ON");
-
-
             }
         }
+
         internal void CmdDebug()
         {
             Send(SocketModel.Command);
@@ -533,66 +559,52 @@ namespace KeithleyControl.ViewModels
 
         public ICommand CmdDebugCommand
         {
-            get
-            {
-                return new RelayCommand(CmdDebug);
-            }
+            get { return new RelayCommand(CmdDebug); }
         }
-        
+
         private RelayCommand _connectCommand;
+
         public ICommand ConnectCommand
         {
-            get
-            {
-                return _connectCommand ?? (_connectCommand = new RelayCommand(Connect));
-            }
+            get { return _connectCommand ?? (_connectCommand = new RelayCommand(Connect)); }
         }
+
         public ICommand DisconnectCommand
         {
-            get
-            {
-                return new RelayCommand(Disconnect);
-            }
+            get { return new RelayCommand(Disconnect); }
         }
+
         public ICommand ClearCommand
         {
-            get
-            {
-                return new RelayCommand(ClearPlot);
-            }
+            get { return new RelayCommand(ClearPlot); }
         }
+
         public ICommand ZoomOutCommand
         {
-            get
-            {
-                return new RelayCommand(YZoomOut);
-            }
+            get { return new RelayCommand(YZoomOut); }
         }
+
         public ICommand ZoomInCommand
         {
-            get
-            {
-                return new RelayCommand(YZoomIn);
-            }
+            get { return new RelayCommand(YZoomIn); }
         }
+
         public ICommand PowerSetCommand
         {
-            get
-            {
-                return new RelayCommand(PowerSupplySet);
-            }
+            get { return new RelayCommand(PowerSupplySet); }
         }
+
         public MainWindowVM()
         {
             SocketModel = new SocketModel();
             PowerSupplyModel = new PowerSupplyModel();
             InitPlot();
             LogInfo = "sales@mitas.vn";
-
         }
 
         #region IDisposable Support
-        private bool disposedValue = false;   /* Redundancy check */
+
+        private bool disposedValue = false; /* Redundancy check */
 
         /// <summary>
         /// Releases unmanaged resources used by the component, and selectively releases managed resources (can be seen as a safe implementation of Dispose())
@@ -613,7 +625,7 @@ namespace KeithleyControl.ViewModels
 
                 /* Release unmanaged resources (if any) */
 
-                disposedValue = true;  /* Processing completed */
+                disposedValue = true; /* Processing completed */
             }
         }
 
@@ -623,11 +635,9 @@ namespace KeithleyControl.ViewModels
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);   /* this: MetaCom.ViewModels.MainWindowViewmodel */
+            GC.SuppressFinalize(this); /* this: MetaCom.ViewModels.MainWindowViewmodel */
         }
+
         #endregion
     }
-
-
-
 }

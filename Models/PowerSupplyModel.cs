@@ -10,9 +10,10 @@ namespace KeithleyControl.Models
     internal class PowerSupplyModel : MainWindowBase
     {
         private string _VoltageVal;
+
         public string VoltageVal
         {
-            get{ return _VoltageVal; }
+            get { return _VoltageVal; }
             set
             {
                 if (_VoltageVal != value)
@@ -22,10 +23,12 @@ namespace KeithleyControl.Models
                 }
             }
         }
+
         private string _CurrentVal;
+
         public string CurrentVal
         {
-            get{ return _CurrentVal; }
+            get { return _CurrentVal; }
             set
             {
                 if (_CurrentVal != value)
@@ -37,9 +40,10 @@ namespace KeithleyControl.Models
         }
 
         private string _GetVoltageSet;
+
         public string GetVoltageSet
         {
-            get{ return _GetVoltageSet; }
+            get { return _GetVoltageSet; }
             set
             {
                 if (_GetVoltageSet != value)
@@ -49,11 +53,14 @@ namespace KeithleyControl.Models
                 }
             }
         }
+
         private string _GetCurrentMax;
+
         public string GetCurrentMax
         {
-            get{ return _GetCurrentMax;}
-            set{
+            get { return _GetCurrentMax; }
+            set
+            {
                 if (_GetCurrentMax != value)
                 {
                     _GetCurrentMax = value;
@@ -61,7 +68,9 @@ namespace KeithleyControl.Models
                 }
             }
         }
+
         private string _SetVoltageSet;
+
         public string SetVoltageSet
         {
             get { return _SetVoltageSet; }
@@ -74,7 +83,9 @@ namespace KeithleyControl.Models
                 }
             }
         }
+
         private string _SetCurrentMax;
+
         public string SetCurrentMax
         {
             get { return _SetCurrentMax; }
@@ -87,10 +98,12 @@ namespace KeithleyControl.Models
                 }
             }
         }
+
         private string _State;
+
         public string State
         {
-            get{ return _State; }
+            get { return _State; }
             set
             {
                 if (_State != value)
@@ -100,7 +113,9 @@ namespace KeithleyControl.Models
                 }
             }
         }
+
         private bool _Output;
+
         public bool Output
         {
             get { return _Output; }
@@ -113,7 +128,9 @@ namespace KeithleyControl.Models
                 }
             }
         }
+
         private bool _Checked;
+
         public bool Checked
         {
             get { return _Checked; }
@@ -126,7 +143,9 @@ namespace KeithleyControl.Models
                 }
             }
         }
+
         private string _Interface;
+
         public string Interface
         {
             get { return _Interface; }
@@ -139,6 +158,7 @@ namespace KeithleyControl.Models
                 }
             }
         }
+
         public PowerSupplyModel()
         {
             VoltageVal = "0.0000";

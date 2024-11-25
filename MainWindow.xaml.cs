@@ -19,6 +19,7 @@ namespace KeithleyControl
     public partial class MainWindow : Window
     {
         internal MainWindowVM mainWindowVM = null;
+
         public MainWindow()
         {
             InitializeComponent();
