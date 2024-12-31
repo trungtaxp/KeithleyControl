@@ -84,7 +84,22 @@ namespace KeithleyControl.Models
                 }
             }
         }
+        
+        private bool _SendFlag;
 
+        public bool SendFlag
+        {
+            get { return _SendFlag; }
+            set
+            {
+                if (_SendFlag != value)
+                {
+                    _SendFlag = value;
+                    OnPropertyChanged(nameof(SendFlag));
+                }
+            }
+        }
+        
         private string _Command;
 
         public string Command

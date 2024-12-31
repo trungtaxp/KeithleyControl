@@ -1,18 +1,8 @@
-﻿using KeithleyControl.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using KeithleyControl.ViewModels;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace KeithleyControl
 {
@@ -23,10 +13,17 @@ namespace KeithleyControl
         public MainWindow()
         {
             InitializeComponent();
-            Height = 800;
-            Width = Height / 0.6;
-            mainWindowVM = new MainWindowVM();
-            DataContext = mainWindowVM;
+            DataContext = new MainWindowVM();
         }
+        
+        private void WebBrowser_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+            var viewModel = DataContext as MainWindowVM;
+            if (viewModel != null && !string.IsNullOrEmpty(viewModel.WebBrowserSource))
+            {
+                webBrowser.Source = new Uri(viewModel.WebBrowserSource);
+            }
+        }
+        
     }
 }
