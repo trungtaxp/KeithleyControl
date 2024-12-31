@@ -1,13 +1,8 @@
 ﻿using KeithleyControl.Commands;
 using KeithleyControl.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using Ivi.Visa;
 
@@ -70,9 +65,7 @@ namespace KeithleyControl.ViewModels
                         Log($"Unsupported interface type: {interfaceType}");
                         break;
                 }
-
-                // Set the WebBrowserSource property when the connection is successful
-                WebBrowserSource = $"http://{ipAddress}/front_panel.html";
+                
             }
             catch (Exception ex) when (ex is Ivi.Visa.NativeVisaException)
             {
@@ -116,12 +109,13 @@ namespace KeithleyControl.ViewModels
                 SocketModel.SendFlag = true;
                 PowerSupplyModel.Output = true;
 
+                WebBrowserSource = $"http://{ipAddress}/front_panel.html"; // Set the WebBrowser source
+
                 Log($"Connected {SelectedInterface} OK!");
             }
         }
         
         private string _webBrowserSource;
-        
         public string WebBrowserSource
         {
             get { return _webBrowserSource; }
@@ -134,7 +128,7 @@ namespace KeithleyControl.ViewModels
                 }
             }
         }
-
+        
         private void Disconnect()
         {
             try

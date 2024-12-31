@@ -6,6 +6,7 @@
         xmlns:tbex="clr-namespace:TextBoxEx"
         xmlns:btnex="clr-namespace:ButtonEx"
         xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:local="clr-namespace:KeithleyControl.Helpers"
         mc:Ignorable="d"
         Title="Keithley Power Supply Control" Height="800" Width="1000">
 
@@ -124,8 +125,8 @@
             </Grid>
         </Grid>
         <Grid Grid.Column="1">
-            <WebBrowser Name="webBrowser" Navigating="WebBrowser_Navigating" />
+            <WebBrowser local:WebBrowserHelper.BindableSource="{Binding WebBrowserSource}" />
         </Grid>
     </Grid>
-    
+
 </Window>

@@ -101,6 +101,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Helpers\WebBrowserHelper.cs" />
     <Compile Include="Models\PowerSupplyModel.cs" />
     <Compile Include="Models\SocketModel.cs" />
     <Compile Include="Themes\ButtonEx.cs" />
