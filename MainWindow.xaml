@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:tbex="clr-namespace:TextBoxEx"
         xmlns:btnex="clr-namespace:ButtonEx"
-        xmlns:oxy="http://oxyplot.org/wpf"
-        xmlns:local="clr-namespace:KeithleyControl.Helpers"
+        xmlns:helpers="clr-namespace:KeithleyControl.Helpers"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         mc:Ignorable="d"
         Title="Keithley Power Supply Control" Height="800" Width="1000">
 
@@ -125,7 +125,7 @@
             </Grid>
         </Grid>
         <Grid Grid.Column="1">
-            <WebBrowser local:WebBrowserHelper.BindableSource="{Binding WebBrowserSource}" />
+            <wv2:WebView2 helpers:WebBrowserHelper.BindableSource="{Binding WebBrowserSource}" x:Name="webView" />
         </Grid>
     </Grid>
 

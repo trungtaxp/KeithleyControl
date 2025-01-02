@@ -109,7 +109,7 @@ namespace KeithleyControl.ViewModels
                 SocketModel.SendFlag = true;
                 PowerSupplyModel.Output = true;
 
-                WebBrowserSource = $"http://{ipAddress}/front_panel.html"; // Set the WebBrowser source
+                WebBrowserSource = $"http://admin:admin@{ipAddress}/front_panel.html"; // Set the WebBrowser source
 
                 Log($"Connected {SelectedInterface} OK!");
             }

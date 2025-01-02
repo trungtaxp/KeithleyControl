@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.Web.WebView2.Wpf;
+using System;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace KeithleyControl.Helpers
 {
@@ -25,10 +25,10 @@ namespace KeithleyControl.Helpers
 
         private static void BindableSourcePropertyChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            if (o is WebBrowser webBrowser)
+            if (o is WebView2 webView)
             {
                 string uri = e.NewValue as string;
-                webBrowser.Source = !string.IsNullOrEmpty(uri) ? new Uri(uri) : null;
+                webView.Source = !string.IsNullOrEmpty(uri) ? new Uri(uri) : null;
             }
         }
     }
