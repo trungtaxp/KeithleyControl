@@ -36,8 +36,8 @@
                         <ComboBox x:Name="Interface"
                                   Text="{Binding SelectedInterface, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   SelectedItem="{Binding SelectedInterface}" Width="125" HorizontalAlignment="Right">
-                            <ComboBoxItem Content="TB-USB"></ComboBoxItem>
                             <ComboBoxItem Content="LAN"></ComboBoxItem>
+                            <ComboBoxItem Content="TB-USB"></ComboBoxItem>
                             <ComboBoxItem Content="GPIB"></ComboBoxItem>
                         </ComboBox>
                     </Grid>

@@ -139,6 +139,9 @@ namespace KeithleyControl.ViewModels
                 SocketModel.SendFlag = false;
                 SocketModel.ConnectFlag = true;
                 PowerSupplyModel.Output = false;
+                SocketModel.Response = string.Empty; // Clear the response
+                WebBrowserSource = "about:blank"; // Set the WebBrowser source to a blank page
+                OnPropertyChanged(nameof(WebBrowserSource)); // Notify property change
                 Log("Disconnected OK!");
             }
             catch (Exception ex)
