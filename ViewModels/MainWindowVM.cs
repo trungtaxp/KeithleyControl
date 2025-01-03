@@ -236,7 +236,7 @@ namespace KeithleyControl.ViewModels
         {
             SocketModel = new SocketModel();
             PowerSupplyModel = new PowerSupplyModel();
-            LogInfo = "sales@mitas.vn";
+            LogInfo = "https://tek.com/";
         }
 
         #region IDisposable Support
