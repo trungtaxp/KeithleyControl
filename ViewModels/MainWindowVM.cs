@@ -33,8 +33,6 @@ namespace KeithleyControl.ViewModels
         private Socket _socket;
         
         public SocketModel SocketModel { get; set; }
-        
-        public PowerSupplyModel PowerSupplyModel { get; set; }
 
         public string SelectedInterface { get; set; }
         
@@ -87,9 +85,8 @@ namespace KeithleyControl.ViewModels
                 SocketModel.ConnectFlag = false;
                 SocketModel.DisConnectFlag = true;
                 SocketModel.SendFlag = true;
-                PowerSupplyModel.Output = true;
 
-                Log($"Connected {SelectedInterface} OK!");
+                Log($"Connected {SelectedInterface} Successfully!");
             }
         }
 
@@ -107,11 +104,10 @@ namespace KeithleyControl.ViewModels
                 SocketModel.ConnectFlag = false;
                 SocketModel.DisConnectFlag = true;
                 SocketModel.SendFlag = true;
-                PowerSupplyModel.Output = true;
 
                 WebBrowserSource = $"http://admin:admin@{ipAddress}/front_panel.html"; // Set the WebBrowser source
 
-                Log($"Connected {SelectedInterface} OK!");
+                Log($"Connected {SelectedInterface} Successfully!");
             }
         }
         
@@ -138,11 +134,10 @@ namespace KeithleyControl.ViewModels
                 SocketModel.DisConnectFlag = false;
                 SocketModel.SendFlag = false;
                 SocketModel.ConnectFlag = true;
-                PowerSupplyModel.Output = false;
                 SocketModel.Response = string.Empty; // Clear the response
                 WebBrowserSource = "about:blank"; // Set the WebBrowser source to a blank page
                 OnPropertyChanged(nameof(WebBrowserSource)); // Notify property change
-                Log("Disconnected OK!");
+                Log("Disconnected Successfully!");
             }
             catch (Exception ex)
             {
@@ -161,7 +156,6 @@ namespace KeithleyControl.ViewModels
 
             try
             {
-                
                 // MessageBox.Show(msg, "Notify");
                 Log(msg);
                 _connectDrive.RawIO.Write(msg + "\n");
@@ -235,7 +229,6 @@ namespace KeithleyControl.ViewModels
         public MainWindowVM()
         {
             SocketModel = new SocketModel();
-            PowerSupplyModel = new PowerSupplyModel();
             LogInfo = "https://tek.com/";
         }
 

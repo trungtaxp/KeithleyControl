@@ -1,6 +1,5 @@
 ﻿using KeithleyControl.ViewModels;
 using System.Windows;
-using Microsoft.Web.WebView2.Core;
 
 namespace KeithleyControl
 {
@@ -11,8 +10,8 @@ namespace KeithleyControl
         public MainWindow()
         {
             InitializeComponent();
-            Height = 800;
-            Width = Height / 0.6;
+            Height = 500;
+            Width = 1400;
             mainWindowVM = new MainWindowVM();
             DataContext = mainWindowVM;
         }
