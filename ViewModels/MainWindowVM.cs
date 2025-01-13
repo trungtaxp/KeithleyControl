@@ -229,7 +229,7 @@ namespace KeithleyControl.ViewModels
         public MainWindowVM()
         {
             SocketModel = new SocketModel();
-            LogInfo = "https://tek.com/";
+            LogInfo = "";
         }
 
         #region IDisposable Support
